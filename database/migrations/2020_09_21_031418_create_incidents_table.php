@@ -15,6 +15,19 @@ class CreateIncidentsTable extends Migration
     {
         Schema::create('incidents', function (Blueprint $table) {
             $table->id();
+            // By using constrained() with no arguments, convention is used
+            // to guess what table it is referring to.
+            $table->foreignId('location_id')->constrained();
+            $table->foreignId('incident_type_id')->constrained();
+            $table->dateTime('occurrence_time');
+            $table->enum('severity', [
+                'least_concern',
+                'immininent_threat',
+                'acute',
+                'critical',
+                'catastrophe',
+            ]);
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

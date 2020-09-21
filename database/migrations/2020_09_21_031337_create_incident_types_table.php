@@ -15,6 +15,7 @@ class CreateIncidentTypesTable extends Migration
     {
         Schema::create('incident_types', function (Blueprint $table) {
             $table->id();
+            $table->string('description');
             $table->timestamps();
         });
     }
