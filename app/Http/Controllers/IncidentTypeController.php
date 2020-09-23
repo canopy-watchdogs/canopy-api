@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\IncidentType;
+use App\Models\IncidentType;
 use Illuminate\Http\Request;
 
 class IncidentTypeController extends Controller
