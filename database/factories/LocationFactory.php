@@ -22,7 +22,7 @@ class LocationFactory extends Factory
     public function definition()
     {
         return [
-            'zipcode' => $this->faker->numberBetween(0, 99999999),
+            'zipcode' => $this->faker->numerify('#####-###'),
             'latitude' => $this->faker->latitude(),
             'longitude' => $this->faker->longitude(),
             'description' => "{$this->faker->city()} - {$this->faker->state()}",
