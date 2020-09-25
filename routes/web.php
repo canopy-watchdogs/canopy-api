@@ -16,3 +16,9 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->get('/locations', 'LocationController@index');
+$router->post('/locations', 'LocationController@store');
+$router->get('/locations/{locationId}', 'LocationController@show');
+$router->put('/locations/{locationId}', 'LocationController@update');
+$router->delete('/locations/{locationId}', 'LocationController@destroy');
