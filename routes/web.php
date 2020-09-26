@@ -22,3 +22,9 @@ $router->post('/locations', 'LocationController@store');
 $router->get('/locations/{locationId}', 'LocationController@show');
 $router->put('/locations/{locationId}', 'LocationController@update');
 $router->delete('/locations/{locationId}', 'LocationController@destroy');
+
+$router->get('/incident-types', 'IncidentTypeController@index');
+$router->post('/incident-types', 'IncidentTypeController@store');
+$router->get('/incident-types/{incidentTypeId}', 'IncidentTypeController@show');
+$router->put('/incident-types/{incidentTypeId}', 'IncidentTypeController@update');
+$router->delete('/incident-types/{incidentTypeId}', 'IncidentTypeController@destroy');

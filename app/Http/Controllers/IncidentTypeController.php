@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\IncidentTypeResource;
 use App\Models\IncidentType;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class IncidentTypeController extends Controller
@@ -14,17 +16,9 @@ class IncidentTypeController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $incidentTypes = IncidentType::paginate(20);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return IncidentTypeResource::collection($incidentTypes);
     }
 
     /**
@@ -35,51 +29,65 @@ class IncidentTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, IncidentType::RULES);
+
+        $incidentType = IncidentType::create($request->all());
+
+        return new IncidentTypeResource($incidentType);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\IncidentType  $incidentType
+     * @param  id  $incidentTypeId
      * @return \Illuminate\Http\Response
      */
-    public function show(IncidentType $incidentType)
+    public function show(int $incidentTypeId)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\IncidentType  $incidentType
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(IncidentType $incidentType)
-    {
-        //
+        try {
+            $incidentType = IncidentType::findOrFail($incidentTypeId);
+            return new IncidentTypeResource($incidentType);
+        } catch (ModelNotFoundException $e) {
+            abort(404, "An incident type with id #$incidentTypeId could not be found.");
+        }
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\IncidentType  $incidentType
+     * @param  int  $incidentTypeId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, IncidentType $incidentType)
+    public function update(Request $request, int $incidentTypeId)
     {
-        //
+        $this->validate($request, IncidentType::RULES);
+
+        try {
+            $incidentType = IncidentType::findOrFail($incidentTypeId);
+            $incidentType->fill($request->all());
+            if ($incidentType->isClean())
+                abort(422, "No changes made to incident type #$incidentTypeId");
+            $incidentType->save();
+            return new IncidentTypeResource($incidentType);
+        } catch (ModelNotFoundException $e) {
+            abort(404, "Incident type #$incidentTypeId was not found.");
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\IncidentType  $incidentType
+     * @param  int  $incidentTypeId
      * @return \Illuminate\Http\Response
      */
-    public function destroy(IncidentType $incidentType)
+    public function destroy(int $incidentTypeId)
     {
-        //
+        try {
+            $incidentType = IncidentType::findOrFail($incidentTypeId);
+            return new IncidentTypeResource($incidentType->delete());
+        } catch (ModelNotFoundException $e) {
+            abort(404, "Location #$incidentTypeId was not found.");
+        }
     }
 }
