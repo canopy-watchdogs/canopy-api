@@ -68,7 +68,8 @@ class LocationController extends Controller
             $location->fill($request->all());
             if ($location->isClean())
                 abort(422, "No changes made to location #$locationId");
-            return new LocationResource($location->save());
+            $location->save();
+            return new LocationResource($location);
         } catch (ModelNotFoundException $e) {
             abort(404, "Location #$locationId was not found.");
         }
