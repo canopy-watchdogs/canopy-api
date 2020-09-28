@@ -85,7 +85,8 @@ class IncidentTypeController extends Controller
     {
         try {
             $incidentType = IncidentType::findOrFail($incidentTypeId);
-            return new IncidentTypeResource($incidentType->delete());
+            $incidentType->delete();
+            return new IncidentTypeResource($incidentType);
         } catch (ModelNotFoundException $e) {
             abort(404, "Location #$incidentTypeId was not found.");
         }

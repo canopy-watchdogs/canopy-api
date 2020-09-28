@@ -85,7 +85,8 @@ class LocationController extends Controller
     {
         try {
             $location = Location::findOrFail($locationId);
-            return new LocationResource($location->delete());
+            $location->delete();
+            return new LocationResource($location);
         } catch (ModelNotFoundException $e) {
             abort(404, "Location #$locationId was not found.");
         }
