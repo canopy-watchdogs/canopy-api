@@ -46,6 +46,7 @@ class LocationController extends Controller
     {
         try {
             $location = Location::findOrFail($locationId);
+
             return new LocationResource($location);
         } catch (ModelNotFoundException $e) {
             abort(404, "A location with id #$locationId could not be found.");
@@ -65,10 +66,14 @@ class LocationController extends Controller
 
         try {
             $location = Location::findOrFail($locationId);
+
             $location->fill($request->all());
+
             if ($location->isClean())
                 abort(422, "No changes made to location #$locationId");
+
             $location->save();
+
             return new LocationResource($location);
         } catch (ModelNotFoundException $e) {
             abort(404, "Location #$locationId was not found.");
@@ -85,7 +90,9 @@ class LocationController extends Controller
     {
         try {
             $location = Location::findOrFail($locationId);
+
             $location->delete();
+
             return new LocationResource($location);
         } catch (ModelNotFoundException $e) {
             abort(404, "Location #$locationId was not found.");

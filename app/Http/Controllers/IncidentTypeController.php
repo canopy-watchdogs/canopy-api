@@ -46,6 +46,7 @@ class IncidentTypeController extends Controller
     {
         try {
             $incidentType = IncidentType::findOrFail($incidentTypeId);
+
             return new IncidentTypeResource($incidentType);
         } catch (ModelNotFoundException $e) {
             abort(404, "An incident type with id #$incidentTypeId could not be found.");
@@ -65,10 +66,14 @@ class IncidentTypeController extends Controller
 
         try {
             $incidentType = IncidentType::findOrFail($incidentTypeId);
+
             $incidentType->fill($request->all());
+
             if ($incidentType->isClean())
                 abort(422, "No changes made to incident type #$incidentTypeId");
+
             $incidentType->save();
+
             return new IncidentTypeResource($incidentType);
         } catch (ModelNotFoundException $e) {
             abort(404, "Incident type #$incidentTypeId was not found.");
@@ -85,7 +90,9 @@ class IncidentTypeController extends Controller
     {
         try {
             $incidentType = IncidentType::findOrFail($incidentTypeId);
+
             $incidentType->delete();
+
             return new IncidentTypeResource($incidentType);
         } catch (ModelNotFoundException $e) {
             abort(404, "Location #$incidentTypeId was not found.");
