@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\IncidentResource;
 use App\Models\Incident;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class IncidentController extends Controller
@@ -14,17 +16,9 @@ class IncidentController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $incidents = Incident::paginate(10);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return IncidentResource::collection($incidents);
     }
 
     /**
@@ -35,41 +29,55 @@ class IncidentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, Incident::RULES);
+
+        $incident = Incident::create($request->all()); 
+
+        return new IncidentResource($incident);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Incident  $incident
+     * @param  int  $incidentId
      * @return \Illuminate\Http\Response
      */
-    public function show(Incident $incident)
+    public function show(int $incidentId)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Incident  $incident
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Incident $incident)
-    {
-        //
+        try {
+            $incident = Incident::findOrFail($incidentId);
+    
+            return new IncidentResource($incident);
+        } catch (ModelNotFoundException $e) {
+            abort(404, "An incident with id #$incidentId could not be found.");
+        }
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Incident  $incident
+     * @param  int  $incidentId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Incident $incident)
+    public function update(Request $request, int $incidentId)
     {
-        //
+        $this->validate($request, Incident::RULES);
+
+        try {
+            $incident = Incident::findOrFail($incidentId);
+
+            $incident->fill($request->all());
+
+            if ($incident->isClean())
+                abort(422, "No changes made to incident type #$incidentId");
+
+            $incident->save();
+
+            return new IncidentResource($incident);
+        } catch (ModelNotFoundException $e) {
+            abort(404, "Incident type #$incidentId was not found.");
+        }
     }
 
     /**
