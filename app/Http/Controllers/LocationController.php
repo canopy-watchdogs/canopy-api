@@ -16,7 +16,7 @@ class LocationController extends Controller
      */
     public function index()
     {
-        $locations = Location::paginate(20);
+        $locations = Location::paginate(10);
 
         return LocationResource::collection($locations);
     }
