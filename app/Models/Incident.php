@@ -40,7 +40,7 @@ class Incident extends Model
 
     public const SEVERITY_LEVELS = [
         'least_concern',
-        'immininent_threat',
+        'imminent_threat',
         'acute',
         'critical',
         'catastrophe',
