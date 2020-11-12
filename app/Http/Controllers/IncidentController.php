@@ -16,7 +16,8 @@ class IncidentController extends Controller
      */
     public function index()
     {
-        $incidents = Incident::paginate(10);
+        $incidents = Incident::orderBy('occurrence_time', 'DESC')
+            ->paginate(10);
 
         return IncidentResource::collection($incidents);
     }
