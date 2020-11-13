@@ -27,6 +27,7 @@ class IncidentResource extends JsonResource
             ],
             'severity' => $this->severity,
             'occurrence_time' => $this->occurrence_time,
+            'description' => $this->description,
         ];
     }
 }
