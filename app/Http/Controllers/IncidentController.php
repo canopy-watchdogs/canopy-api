@@ -30,7 +30,7 @@ class IncidentController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, Incident::RULES);
+        $this->validate($request, Incident::getRules());
 
         $incident = Incident::create($request->all()); 
 
@@ -63,7 +63,7 @@ class IncidentController extends Controller
      */
     public function update(Request $request, int $incidentId)
     {
-        $this->validate($request, Incident::RULES);
+        $this->validate($request, Incident::getRules());
 
         try {
             $incident = Incident::findOrFail($incidentId);
