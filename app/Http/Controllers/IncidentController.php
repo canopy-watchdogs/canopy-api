@@ -84,11 +84,19 @@ class IncidentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Incident  $incident
+     * @param  int  $incident
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Incident $incident)
+    public function destroy(int $incidentId)
     {
-        //
+        try {
+            $incident = Incident::findOrFail($incidentId);
+
+            $incident->delete();
+
+            return new IncidentResource($incident);
+        } catch (ModelNotFoundException $e) {
+            abort(404, "Incident #$incidentId was not found.");
+        }
     }
 }
