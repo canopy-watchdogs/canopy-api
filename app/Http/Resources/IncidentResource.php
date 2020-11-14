@@ -22,7 +22,8 @@ class IncidentResource extends JsonResource
             ],
             'location' => [
                 'id' => $this->location->id,
-                'zipcode' => $this->location->zipcode,
+                'latitude' => $this->location->latitude,
+                'longitude' => $this->location->longitude,
                 'description' => $this->location->description,
             ],
             'severity' => $this->severity,
